@@ -1,0 +1,117 @@
+#usfm2html.py
+#version 0.3
+# by John Wood -- for Tech Advance
+# This script reads a USFM 2 file and outputs a "pretty"
+# HTML version of the file.
+# It is intended that the HTML will then be further tweaked
+# in LibreOffice or something similar, but of course you're
+# free to do as you please.
+#
+# It will not check for a HTML file before writing to it.
+# I will decide later if that is a bug or a feature.
+#
+# At this point it will only work on a file. Later it may work
+# on a folder/directory
+# It also does not work with wildcards for multiple files (i.e. *.usfm)
+
+# Changes in v. 0.3:
+#   Correctly deals with UTF-8 files that otherwise may not display correctly.
+
+# Changes in v. 0.2:
+#   Adding/changing code to deal with Bahasa USFM files
+
+# Usage python3 usfm2html.py <path to USFM file>
+
+# The output of this command can be run through html2ps and then ps2pdf in order to produce pdf output.
+# Please note that any errors in the USFM will likely produce formatting errors in the HTML, and thus in the PDF.
+
+#Import necessary python components
+
+import os	# file system commands
+import re	# regular expressions
+import sys	# command line arguments
+import shutil	# high level file operations
+
+arguments=sys.argv[1:]
+count_args=len(arguments)
+print("usfm2html: Making your output prettier since 2018\n")
+if count_args!=1: #If there is not exactly one argument, fail with a usage remark.
+    print ("usfm2html.py script to conver USFM 2 scripture to pretty HTML")
+    print("Usage: python3 usfm2html.py <path to USFM file>")
+    sys.exit(1)
+book_name="Unknown" # Script was failing with 'book_name unknown' errors. This initializes the variable before it can be needed.
+
+convert_file=sys.argv[1]
+if not re.search(r'.u?sfm',convert_file, flags=re.IGNORECASE):
+    print("Not a USFM file as far as I can tell.")
+    sys.exit(1)
+target_file=re.sub(r'.u?sfm','.html',convert_file,flags=re.IGNORECASE)
+print("Converting "+convert_file+" to "+target_file+"\n")
+
+with open(target_file, "w+") as newfile:
+    newfile.write('\n'.join([
+    '<!DOCTYPE html>',
+    '<html >',
+    '    <head>',
+    '        <meta charset="UTF-8">',
+    '        <title></title>',
+    '       <style type="text/css">',
+    '           .verse_number {color:darkgrey}',
+    '           h1, h2, h3, .section {text-align: center}',
+    '           .footnote {color:grey;}',
+    '           .chapter {page-break-before: always}',
+    '           .chapitre {font-style: italic}',
+    '           .book_title {text-decoration:underline}',
+    '       </style>',
+    '    </head>',
+    '<body>']))
+
+with open(convert_file) as input_file: #open the usfm file and scan it
+    for line in input_file:
+        line=line.rstrip()
+        if re.match(r'\\toc2',line):
+            line=None
+        elif re.match(r'\\toc3',line):
+            line=None
+        elif re.match(r'\\id(e?)',line):
+            line=None
+        elif re.match(r'\\rem',line):
+            line=None
+        elif re.match(r'\\b',line):
+            line=None
+        elif re.match(r'\\mt',line):
+            line=None #strip out tags we don't want/need
+        #elif re.match(r'^\\',line):
+        else:
+            book=re.match(r'\\h (.+)',line)
+            if book:
+                book_name=book.group(1)
+            if '\\' not in line:
+                line=re.sub(r'(.+)','<h3 class="chapitre">\\1</h3>',line) # print lines that have no tags as though they are chapters
+            line=re.sub(r'\\v (\d+?) ','<sup class="verse_number">\\1 </sup>',line) # change verse marking
+            line=re.sub(r'\\toc1 (.+)','<h2 class="fancy_name">\\1</h2>',line) #set fancy name of book
+            line=re.sub(r'\\h (.+)','<h1 class="book_name">\\1</h1>',line) #set the book name
+            line=re.sub(r'\\c (\d+)','<!--NewPage--><pagebreak/><?page-break><h3 class="chapter">'+book_name+' Chapter \\1</h3>',line) # change chapter marking
+            line=re.sub(r'\\s (.+)','<h4 class="section">\\1</h4>',line) # section headings from .sfm files
+            line=re.sub(r'\\q1','<br />&nbsp;',line) #quote level 1
+            line=re.sub(r'\\q2','<br />&nbsp;&nbsp;&nbsp;',line) #quote level 2
+            line=re.sub(r'\\q','<br />',line) #change quote tags to line breaks
+            line=re.sub(r'\\p|\\m','</p>',line) #close paragraph marks
+            line=re.sub(r'\\s5','<p>',line) #open paragraphs
+            line=re.sub(r'\\f\*','</sup>',line) #close footnotes
+            line=re.sub(r'\\f \+ \\ft','<sup class="footnote">',line) #start footnotes
+            line=re.sub(r'\\fqa\*','</em>',line) #close quote in footnote
+            line=re.sub(r'\\fqa','<em>',line) #open quote in footnote
+            line=re.sub(r'\\f \+ \\fr','<sup class="footnote"><strong>',line) #open reference in footnote
+            line=re.sub(r'\\fk','</strong><em>',line) #close reference in footnote
+            line=re.sub(r'\\ft','</strong></em>',line) # yeah, something to do with footnotes
+            line=re.sub(r'\\li','<li>',line) #list items
+            line=re.sub(r'\\bk\*','</span>',line) #inline book titles close
+            line=re.sub(r'\\bk','<span class="book_title">',line) #inline book titles open
+        if line!=None:
+            with open(target_file, "a+") as newfile:
+                    newfile.write(line+"\n")
+
+with open(target_file, "a+") as newfile:
+    newfile.write("</body></html>")
+newfile.close()
