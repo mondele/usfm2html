@@ -98,11 +98,11 @@ with open(convert_file) as input_file: #open the usfm file and scan it
             line=re.sub(r'\\q','<br />',line) #change quote tags to line breaks
             line=re.sub(r'\\p|\\m','</p>',line) #close paragraph marks
             line=re.sub(r'\\s5','<p>',line) #open paragraphs
-            line=re.sub(r'\\f\*','</sup>',line) #close footnotes
-            line=re.sub(r'\\f \+ \\ft','<sup class="footnote">',line) #start footnotes
+            line=re.sub(r'\\f\*','</sup></span>',line) #close footnotes
+            line=re.sub(r'\\f \+ \\ft','<span class="footnote"><sup>',line) #start footnotes
             line=re.sub(r'\\fqa\*','</em>',line) #close quote in footnote
             line=re.sub(r'\\fqa','<em>',line) #open quote in footnote
-            line=re.sub(r'\\f \+ \\fr','<sup class="footnote"><strong>',line) #open reference in footnote
+            line=re.sub(r'\\f \+ \\fr','<span class="footnote"><sup><strong>',line) #open reference in footnote
             line=re.sub(r'\\fk','</strong><em>',line) #close reference in footnote
             line=re.sub(r'\\ft','</strong></em>',line) # yeah, something to do with footnotes
             line=re.sub(r'\\li','<li>',line) #list items
