@@ -88,7 +88,7 @@ with open(convert_file) as input_file: #open the usfm file and scan it
                 book_name=book.group(1)
             if '\\' not in line:
                 line=re.sub(r'(.+)','<h3 class="chapitre">\\1</h3>',line) # print lines that have no tags as though they are chapters
-            line=re.sub(r'\\v (\d+?) ','<sup class="verse_number">\\1 </sup>',line) # change verse marking
+            line=re.sub(r'\\v (\d+?) ','<span class="verse_number"><sup>\\1 </sup></span>',line) # change verse marking
             line=re.sub(r'\\toc1 (.+)','<h2 class="fancy_name">\\1</h2>',line) #set fancy name of book
             line=re.sub(r'\\h (.+)','<h1 class="book_name">\\1</h1>',line) #set the book name
             line=re.sub(r'\\c (\d+)','<!--NewPage--><pagebreak/><?page-break><h3 class="chapter">'+book_name+' Chapter \\1</h3>',line) # change chapter marking
