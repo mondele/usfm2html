@@ -36,8 +36,13 @@ arguments=sys.argv[1:]
 count_args=len(arguments)
 print("usfm2html: Making your output prettier since 2018\n")
 if count_args!=1: #If there is not exactly one argument, fail with a usage remark.
-    print ("usfm2html.py script to conver USFM 2 scripture to pretty HTML")
-    print("Usage: python3 usfm2html.py <path to USFM file>")
+    if count_args == 0:
+        print ("usfm2html.py script to convert USFM 2 scripture to pretty HTML")
+        print("Usage: python3 usfm2html.py <path to USFM file>")
+    elif count_args > 1:
+        print ("usfm2html.py currently only handles one file at a time")
+        print ("If you are using a bash shell, try")
+        print ("    for n in $(ls *.usfm); do usfm2html $n; done")
     sys.exit(1)
 book_name="Unknown" # Script was failing with 'book_name unknown' errors. This initializes the variable before it can be needed.
 
