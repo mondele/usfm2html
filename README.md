@@ -1,6 +1,10 @@
 # usfm2html
 Creates "pretty" html/css output from USFM files
 
+# Changes in v. 0.4:
+   Removed <!--NewPage--> comments. These were causing issues printing from LibreOffice,
+   but didn't seem to cause page breaks as intended.
+
 # Changes in v. 0.3:
    Correctly deals with UTF-8 files that otherwise may not display correctly.
 
