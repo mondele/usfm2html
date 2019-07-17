@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #usfm2html.py
 #version 0.3
 # by John Wood -- for Tech Advance
@@ -13,6 +14,9 @@
 # At this point it will only work on a file. Later it may work
 # on a folder/directory
 # It also does not work with wildcards for multiple files (i.e. *.usfm)
+
+# Change in v. 04:
+#   Removed <!--NewPage--> comment because it caused problems in LibreOffice, and didn't seem to work as intended.
 
 # Changes in v. 0.3:
 #   Correctly deals with UTF-8 files that otherwise may not display correctly.
@@ -96,7 +100,7 @@ with open(convert_file) as input_file: #open the usfm file and scan it
             line=re.sub(r'\\v (\d+?) ','<span class="verse_number"><sup>\\1 </sup></span>',line) # change verse marking
             line=re.sub(r'\\toc1 (.+)','<h2 class="fancy_name">\\1</h2>',line) #set fancy name of book
             line=re.sub(r'\\h (.+)','<h1 class="book_name">\\1</h1>',line) #set the book name
-            line=re.sub(r'\\c (\d+)','<!--NewPage--><pagebreak/><?page-break><h3 class="chapter">'+book_name+' Chapter \\1</h3>',line) # change chapter marking
+            line=re.sub(r'\\c (\d+)','<pagebreak/><?page-break><h3 class="chapter">'+book_name+' Chapter \\1</h3>',line) # change chapter marking
             line=re.sub(r'\\s (.+)','<h4 class="section">\\1</h4>',line) # section headings from .sfm files
             line=re.sub(r'\\q1','<br />&nbsp;',line) #quote level 1
             line=re.sub(r'\\q2','<br />&nbsp;&nbsp;&nbsp;',line) #quote level 2
