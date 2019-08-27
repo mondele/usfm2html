@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #usfm2html.py
-#version 0.3
+#version 0.4
 # by John Wood -- for Tech Advance
 # This script reads a USFM 2 file and outputs a "pretty"
 # HTML version of the file.
