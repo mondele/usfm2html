@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #usfm2html.py
-#version 0.4
+#version 0.5
 # by John Wood -- for Tech Advance
 # This script reads a USFM 2 file and outputs a "pretty"
 # HTML version of the file.
@@ -15,7 +15,10 @@
 # on a folder/directory
 # It also does not work with wildcards for multiple files (i.e. *.usfm)
 
-# Change in v. 04:
+# Change in v. 0.5:
+#   Added code to ignore the Strong's numbers, etc., in USFM 3 files
+
+# Change in v. 0.4:
 #   Removed <!--NewPage--> comment because it caused problems in LibreOffice, and didn't seem to work as intended.
 
 # Changes in v. 0.3:
@@ -117,6 +120,7 @@ with open(convert_file) as input_file: #open the usfm file and scan it
             line=re.sub(r'\\li','<li>',line) #list items
             line=re.sub(r'\\bk\*','</span>',line) #inline book titles close
             line=re.sub(r'\\bk','<span class="book_title">',line) #inline book titles open
+            line=re.sub(r'\\w(.*?)(\|.+?\\w\*)','\\1',line) # remove Strongs numbers, etc.
         if line!=None:
             with open(target_file, "a+") as newfile:
                     newfile.write(line+"\n")
