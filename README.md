@@ -1,7 +1,7 @@
 # usfm2html
 Creates "pretty" html/css output from USFM files
 
-# Changes is v. 0.5:
+# Changes in v. 0.5:
    Added code to ignore Strong's numbers, etc., from USFM 3
 
 # Changes in v. 0.4:
