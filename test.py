@@ -12,7 +12,7 @@ import sys
 
 import json
 
-from usfmModule import usfmConverter
+# from usfmModule import usfmConverter
 
 convert_tit  = u""+' Convert Files '
 prefs        = u""+' Preferences '
