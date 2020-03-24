@@ -32,6 +32,7 @@ class main(object):
 
         self.win.title("USFM 2 HTML")
         self.create_widgets()
+        self.tip.window = None
         #self.load_prefs()
     
     def _quit(self):

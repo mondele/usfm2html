@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #usfm2html.py
-#version 0.5
+#version 0.6
+
 # by John Wood -- for Tech Advance
 # This script reads a USFM 2 file and outputs a "pretty"
 # HTML version of the file.
@@ -14,6 +15,9 @@
 # At this point it will only work on a file. Later it may work
 # on a folder/directory
 # It also does not work with wildcards for multiple files (i.e. *.usfm)
+
+# Change in v. 0.6
+#   Changed /s5 to print a horizontal line. Also changed paragraph start/stop because of this.
 
 # Change in v. 0.5:
 #   Added code to ignore the Strong's numbers, etc., in USFM 3 files
@@ -108,8 +112,8 @@ with open(convert_file) as input_file: #open the usfm file and scan it
             line=re.sub(r'\\q1','<br />&nbsp;',line) #quote level 1
             line=re.sub(r'\\q2','<br />&nbsp;&nbsp;&nbsp;',line) #quote level 2
             line=re.sub(r'\\q','<br />',line) #change quote tags to line breaks
-            line=re.sub(r'\\p|\\m','</p>',line) #close paragraph marks
-            line=re.sub(r'\\s5','<p>',line) #open paragraphs
+            line=re.sub(r'\\p|\\m','</p><p>',line) #close paragraph marks
+            line=re.sub(r'\\s5','<hr>',line) #chunk marks paragraphs
             line=re.sub(r'\\f\*','</sup></span>',line) #close footnotes
             line=re.sub(r'\\f \+ \\ft','<span class="footnote"><sup>',line) #start footnotes
             line=re.sub(r'\\fqa\*','</em>',line) #close quote in footnote
