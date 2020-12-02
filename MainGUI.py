@@ -66,7 +66,9 @@ class MainGUI:
         
         if(target_file): # If the HTML is generated successfuly
             messagebox.showinfo("Success", "Your HTML has been generated at: \n" + target_file)
-            self.reset()        
+            self.reset()
+        else:
+            messagebox.showerror("Error", "Something went wrong and the file could not be generated")
 
     # Resets the GUI to its original state.
     def reset(self):
