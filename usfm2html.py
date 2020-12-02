@@ -137,6 +137,9 @@ def convert_to_html(convert_file):
         newfile.write("</body></html>")
     newfile.close()
 
+    return target_file
+
+
 arguments=sys.argv[1:]
 count_args=len(arguments)
 print("usfm2html: Making your output prettier since 2018\n")

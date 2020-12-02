@@ -6,6 +6,7 @@ from tkinter.filedialog import askdirectory
 from functools import partial
 from tkinter import messagebox
 import os.path 
+import webbrowser
 
 class MainGUI:
 
@@ -55,14 +56,19 @@ class MainGUI:
         self.__file_path.set(path)
     
     # Uses convert_to_html function to convert the file chosen, 
-    # the resets the GUI. If no file has been chosen, do nothing.
+    # then resets the GUI. If no file has been chosen, do nothing.
     def convert(self):
         path = self.__file_path.get()
 
+        target_file = ""
         if(path): #If a file has been chosen, then attempt convertion
-            self.convert_to_html(path)
-            messagebox.showinfo("Success", "You HTML has been successfully generated")
+            target_file = self.convert_to_html(path)
+        
+        if(target_file): # If the HTML is generated successfuly
+            messagebox.showinfo("Success", "Your HTML has been generated at: \n" + target_file)
             self.reset()
+        else:
+            messagebox.showerror("Error", "Something went wrong and the file could not be generated")
 
     # Resets the GUI to its original state.
     def reset(self):
