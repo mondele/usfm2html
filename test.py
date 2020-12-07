@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/3.7/bin/python3
+#!/Library/Frameworks/Python.framework/Versions/3.8/bin/python3
 # coding=<UTF-8>
 import tkinter as tk
 from tkinter import ttk

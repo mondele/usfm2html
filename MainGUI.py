@@ -61,7 +61,7 @@ class MainGUI:
 
         if(path): #If a file has been chosen, then attempt convertion
             self.convert_to_html(path)
-            messagebox.showinfo("Success", "You HTML has been successfully generated")
+            messagebox.showinfo("Success", "Your HTML has been successfully generated")
             self.reset()
 
     # Resets the GUI to its original state.
